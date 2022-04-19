@@ -1,14 +1,16 @@
 <template>
   <div class="Home">
-    <el-container>
-      <!-- 主体区 -->
-      <el-main>
-        <article-item v-for="article in articleList" :key="article.id" v-bind="article"></article-item>
-      </el-main>
+      <div class="header">
+        <user-info v-if="token && userInfo" :user="userInfo"></user-info>
+      </div>
 
-      <!-- 侧边栏 -->
-      <el-aside></el-aside>
-    </el-container>
+      <div class="main">
+        <div class="main-body">
+          <article-item v-for="item in articleList" :key="item.id" :article="item"></article-item>
+        </div>
+
+        <div class="main-aside"></div>
+      </div>
 
     <!-- 回到顶部 -->
     <go-top></go-top>
@@ -16,14 +18,18 @@
 </template>
 
 <script>
-import ArticleItem from "@/components/ArticleItem"
-import GoTop from "@/components/GoTop"
+import ArticleItem from "../components/ArticleItem.vue"
+import GoTop from "../components/GoTop.vue"
+import UserInfo from "../components/UserInfo.vue"
+
+import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
   components: {
-    "article-item": ArticleItem,
-    "go-top": GoTop
+    ArticleItem,
+    GoTop,
+    UserInfo
   },
   data () {
     return {
@@ -42,24 +48,42 @@ export default {
           viewCount: 20,
           createAt: '2022-03-13 19:00:00'
         }
-      ]
+      ],
+      // ...mapState('mUser', ['token', 'userInfo'])
     }
+  },
+  methods: {},
+  computed: {
+    ...mapState('mUser', ['token', 'userInfo'])
   }
 }
 </script>
 
 <style scoped>
-  .el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-    text-align: center;
-    line-height: 200px;
+  .header {
+    height: 60px;
+    background-color: #E9EEF3;
   }
   
-  .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
+  .main {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
   }
+
+  .main-body {
+    height: 100%;
+    width: 800px;
+    background-color: #E6E6E6;
+    margin-right: 20px;
+  }
+  
+  .main-aside {
+    height: 100%;
+    width: 300px;
+    background-color: #D8D8D8;
+    margin-left: 20px;
+  }
+
 </style>

@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import store from './store/store.js'
 
 Vue.config.productionTip = false
 
@@ -20,7 +21,7 @@ import qs from 'qs'
 // axios拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  config.headers.Authorization = window.sessionStorage.getItem('token')
+  config.headers.Authorization = window.sessionStorage.getItem('token') || ''
   config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
   if (config.method==='post')
   {
@@ -46,6 +47,7 @@ axios.interceptors.response.use(function (response) {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

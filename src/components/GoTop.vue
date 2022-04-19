@@ -25,9 +25,9 @@ export default {
       const curHeight = document.body.scrollTop || document.documentElement.scrollTop
 
       if (curHeight > 400) {
-        this.topShow = true
+        this.showIcon = true
       } else {
-        this.topShow = false
+        this.showIcon = false
       }
     }
   },

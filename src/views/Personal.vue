@@ -1,6 +1,6 @@
 <template>
   <div class="Personal">
-    <h1>{{ msg }}</h1>
+    <h1>{{ userId }}</h1>
   </div>
 </template>
 
@@ -9,8 +9,11 @@ export default {
   name: 'Personal',
   data () {
     return {
-      msg: 'Personal page'
+      userId: 0
     }
+  },
+  mounted: function () {
+    this.userId = this.$route.query.userId
   }
 }
 </script>

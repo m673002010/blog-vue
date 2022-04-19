@@ -1,8 +1,8 @@
 <template>
     <div class="login-main">
         <el-form ref="loginFormRef" :rules="loginFormRules" :model='loginForm' class="login_form">
-            <el-form-item prop="username" label="账号">
-                <el-input v-model="loginForm.username" prefix-icon="el-icon-user"></el-input>
+            <el-form-item prop="account" label="账号">
+                <el-input v-model="loginForm.account" prefix-icon="el-icon-user"></el-input>
             </el-form-item>
             <el-form-item prop="password" label="密码">
                 <el-input v-model="loginForm.password" prefix-icon="el-icon-key" type="password"></el-input>
@@ -16,15 +16,17 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
     data() {
         return {
             loginForm: {
-                username: '',
+                account: '',
                 password: ''
             },
             loginFormRules: {
-                username: [ { required: true, message: '请输入用户名' }],
+                account: [ { required: true, message: '请输入用户名' }],
                 password: [ { required: true, message: '请输入密码' } ]
             }
         }
@@ -38,13 +40,21 @@ export default {
                 const { data: result } = await this.$http.post('/user/login', this.loginForm)
                 if (+result.code === 0) {
                     this.$message.success('登录成功')
-                    window.sessionStorage.setItem('token', result.data.token)
+                    
+                    // 登录成功，存储token和用户信息
+                    this.updateToken(result.data.token)
+                    this.updateUserInfo(JSON.stringify({ 
+                        username: result.data.username,
+                        account: result.data.account
+                    }))
+
                     this.$router.push('/home')
                 }
                 else this.$message.error('登录失败')
             })
             this.$refs.loginFormRef.resetFields()
-        }
+        },
+        ...mapMutations('mUser', ['updateUserInfo', 'updateToken'])
     },
 }
 </script>
